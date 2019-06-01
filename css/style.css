@@ -1,0 +1,277 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-width: 960px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  background-color: #2F8D91;
+}
+.container {
+  margin: 0 auto;
+  padding: 0 20px;
+  max-width: 960px;
+}
+.page__section {
+  padding: 20px 30px;
+  background-color: #eff8da;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+}
+.page__title {
+  color: #475c0d;
+}
+.page-header {
+  padding: 5px;
+  min-height: 60px;
+  background-color: #13ca93;
+}
+.page-header__site-title {
+  margin-left: 50px;
+  width: 200px;
+}
+.input {
+  display: block;
+  width: 160px;
+  min-height: 20px;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border: 2px solid #2F8D91;
+}
+.input--readonly {
+  -moz-appearance: textfield;
+}
+.input--readonly::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+}
+.auth {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  height: 80vh;
+}
+.auth__form {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 30px;
+  width: 300px;
+  background-color: #eff8da;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border: 2px solid #5eb11a;
+  -webkit-box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.514);
+          box-shadow: 0 0 10px 5px rgba(0, 0, 0, 0.514);
+}
+.auth__label {
+  display: block;
+  margin: 0 auto 5px auto;
+  width: 160px;
+}
+.auth__input {
+  margin: 0 auto 10px auto;
+}
+.auth__button {
+  margin: 10px auto 0 auto;
+}
+.button {
+  display: inline-block;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  padding: 3px 10px;
+  min-width: 100px;
+  min-height: 30px;
+  text-align: center;
+  vertical-align: middle;
+  text-decoration: none;
+  text-transform: uppercase;
+  color: #000;
+  background-color: #13ca93;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  border: 2px solid #2F8D91;
+  cursor: pointer;
+  -webkit-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
+}
+.button:hover,
+.button:focus {
+  background-color: rgba(19, 202, 147, 0.5);
+}
+.button--block {
+  display: block;
+}
+.button--big {
+  padding: 10px 20px;
+  font-size: 36px;
+}
+.gem__list {
+  height: 300px;
+  overflow-y: scroll;
+}
+.gem__item {
+  margin-bottom: 15px;
+}
+.gem__text {
+  color: #475c0d;
+  font-size: 18px;
+  font-style: italic;
+}
+.profile {
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  background-color: #eff8da;
+}
+.profile__colums {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-justify-content: space-around;
+      -ms-flex-pack: distribute;
+          justify-content: space-around;
+}
+.profile__col {
+  width: 49%;
+}
+.profile__field {
+  margin: 10px;
+  border: 2px solid #5eb11a;
+}
+.profile__list {
+  margin: 10px 0;
+  padding: 0;
+  list-style: none;
+}
+.profile__title {
+  margin: 5px 0;
+  font-size: 20px;
+  font-weight: 400;
+}
+.profile__item {
+  margin-bottom: 10px;
+}
+.users__colums {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: start;
+  -webkit-align-items: flex-start;
+      -ms-flex-align: start;
+          align-items: flex-start;
+}
+.users__list {
+  margin: 0;
+  padding: 0;
+  max-height: 700px;
+  overflow-y: auto;
+  list-style: none;
+}
+.users__item {
+  position: relative;
+  width: 250px;
+}
+.users__item:not(:last-child) {
+  margin-bottom: 20px;
+}
+.users__item--elf .users__link {
+  border: 2px solid #475c0d;
+}
+.users__item--dwarf .users__link {
+  border: 2px solid #5eb11a;
+}
+.users__link {
+  display: block;
+  position: relative;
+  padding: 5px 10px;
+  text-decoration: none;
+  text-align: center;
+  color: #000;
+  -webkit-border-radius: 5px;
+          border-radius: 5px;
+  background-color: #13ca93;
+}
+.users__link:hover,
+.users__link:focus {
+  border-color: #fa8e00;
+}
+.users__gems {
+  display: block;
+}
+.users__delete {
+  color: #fa8e00;
+  text-decoration: none;
+}
+.users__delete:hover,
+.users__delete:focus {
+  text-decoration: underline;
+}
+.users__label {
+  display: block;
+  margin-bottom: 10px;
+}
+.users__input {
+  margin-bottom: 15px;
+}
+.users__name {
+  font-weight: 700;
+}
+.users__data {
+  overflow: hidden;
+  -webkit-transition: all 0.3s ease;
+  -o-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+}
+.users__master-icon {
+  display: block;
+  position: absolute;
+  right: 2px;
+  top: 2px;
+}
+.add-gems__colums {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.add-gems__list {
+  padding: 0;
+  list-style: none;
+}
+.add-gems__item {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  width: 400px;
+}
+.add-gems__item:not(:last-child) {
+  margin-bottom: 15px;
+}
+.add-gems__name {
+  color: #475c0d;
+}
