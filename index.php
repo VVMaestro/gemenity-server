@@ -38,10 +38,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     //Если ошибок нет - направляем пользователя на соответстующую страницу 
     else {
-        if ($auth_user['race'] == 'dwarf') {
+        if ($auth_user['role'] == 'dwarf') {
             header('Location: /add-gems.php');
             exit();
-        } else if ($auth_user['race'] == 'elf') {
+        } else if ($auth_user['role'] == 'elf') {
             header('Location: /elf.php');
             exit();
         }

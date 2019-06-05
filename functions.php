@@ -11,6 +11,22 @@ function renderTemplate($template, $data = array()) {
     }
 }
 
+function connect_to_db ($db) {
+    $connect = mysqli_connect (
+        $db['host'],
+        $db['user'],
+        $db['password'],
+        $db['name'],
+        $db['port']
+    );
+
+    if (!$connect) {
+        print ('Ошибка соединения: ' . mysqli_connect_error());
+    }
+
+    return $connect;
+}
+
 function error_check ($con, $result) {
     if(!$result) {
         $error = 'Ошибка запроса: ' . mysqli_error($con);

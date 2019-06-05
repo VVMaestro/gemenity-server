@@ -1,13 +1,13 @@
 <main class="page__main">
     <div class="container">
         <section class="page__section">
-            <h2 class="page__title">Добро пожаловать <?= $name; ?>!</h2>
+            <h2 class="page__title">Добро пожаловать <?= $NAME; ?>!</h2>
             <div class="profile__colums">
                 <div class="profile__col">
                     <form>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Логин</legend>
-                            <input class="input profile__input" type="text" name="login" value="">
+                            <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
                             <input type="submit" class="button profile__button" value="Обновить">
                         </fieldset>
                         <fieldset class="profile__field">
@@ -18,7 +18,7 @@
                         </fieldset>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Имя</legend>
-                            <input class="input profile__input" type="text" name="name">
+                            <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
                             <input type="submit" class="button profile__button" value="Обновить">
                         </fieldset>
                     </form>
@@ -27,9 +27,15 @@
                     <fieldset class="profile__field">
                         <legend class="profile__title">Информация</legend>
                         <ul class="profile__list">
-                            <li class="profile__item">Дата регистрации: </li>
+                            <li class="profile__item">Дата регистрации: <?= $registration_date; ?> </li>
                             <li class="profile__item">Дата последней авторизации: </li>
-                            <li class="profile__item">Статус: <?= $status; ?></li>
+                            <li class="profile__item">
+                                Статус: <?php if($status == 'active') {
+                                    print('Активен');
+                                } else {
+                                    print('Удалён');
+                                } ?>
+                            </li>
                             <?php if ($status == 'deleted') : ?>
                                 <li class="profile__item">Дата удаления:
                                     <? $delete_date; ?>
