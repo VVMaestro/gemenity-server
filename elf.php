@@ -1,17 +1,22 @@
 <?php
 
-require_once 'data.php';
 require_once 'functions.php';
 
 session_start();
 
-$user = $_SESSION['user']; 
+$user = $_SESSION['user'];
+$title = 'Страница эльфа';
+
+var_dump($user);
 
 if ($user) {
     $page_content = renderTemplate('elf-profile', [
         'login' => $user['login'],
-        'name' => $user['name']
+        'NAME' => $user['name'],
+        'status' => $user['status'],
+        'delete_date' => $user['delete_date']
     ]);
+    $title = $user['name'];
 } else {
     header('Location: /index.php');
 }

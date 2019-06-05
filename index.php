@@ -1,7 +1,8 @@
 <?php
 
-require_once 'functions.php';
 require_once 'data.php';
+require_once 'init.php';
+require_once 'functions.php';
 
 session_start();
 
@@ -18,24 +19,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $errors[$field] = 'Поле нужно заполнить';
         }
     }
-
-    //Вынести в функцию------
-    $auth_user = null;
-    foreach ($users as $user) {
-        if ($user['login'] == $post_data['login']) {
-            $auth_user = $user;
-            break;
-        } else {
-            $auth_user = false;
-        }
-    }
-    //---------------------
-    
     //Проверка, есть ли такой пользователь в системе
+    $auth_user = find_user($post_data['login'], $connect);
     if (!count($errors) && $auth_user) {
         //Проверка совпадения пароля
-        $isPasswordVerified = $auth_user['password'] == $post_data['password'];
-        if ($isPasswordVerified) {
+        if (password_verify($post_data['password'], $auth_user['password']) || $post_data['password'] == $auth_user['password']) {
             $_SESSION['user'] = $auth_user;
         } else {
             $errors['password'] = 'Неверный пароль';

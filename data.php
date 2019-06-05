@@ -1,5 +1,13 @@
 <?php
 
+$database = [
+    'host' => 'localhost',
+    'user' => 'root',
+    'password' => '',
+    'name' => 'gemenity',
+    'port' => '3306'
+];
+
 $users = [
     [
         'name' => 'Леголас',
