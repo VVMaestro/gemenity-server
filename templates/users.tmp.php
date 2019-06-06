@@ -17,43 +17,41 @@
                 <div class="users__wrapper">
                     <h3 class="page__title">Эльфы:</h3>
                     <ul class="users__list">
-                        <?php foreach ($all_users as $user) : ?>
-                            <?php if ($user['role'] == 'elf') : ?>
-                                <li class="users__item users__item--elf">
-                                    <a href="#" class="users__link">
-                                        <span class="users__name"><?= $user['NAME']; ?></span>
-                                        <div class="users__data">
-                                            <span class="users__gems">Получено: </span>
-                                            <span class="users__gems">Любимые: </span>
-                                            <ul class="users__like-list">
-                                                <li class="users__like-item">Хризолит</li>
-                                                <li class="users__like-item">Алмаз</li>
-                                                <li class="users__like-item">Корунд</li>
-                                            </ul>
-                                        </div>
-                                    </a>
-                                    <a href="#" class="users__delete">Удалить</a>
-                                </li>
-                            <?php endif; ?>
+                        <?php foreach ($elves as $elf) : ?>
+                            <li class="users__item users__item--elf">
+                                <a href="#" class="users__link">
+                                    <span class="users__name"><?= $elf['NAME']; ?></span>
+                                    <div class="users__data">
+                                        <span class="users__gems">Получено: <?= $elf['assigned_gems'] ?> </span>
+                                        <span class="users__gems">Любимые: </span>
+                                        <ul class="users__like-list">
+                                            <li class="users__like-item">Хризолит</li>
+                                            <li class="users__like-item">Алмаз</li>
+                                            <li class="users__like-item">Корунд</li>
+                                        </ul>
+                                    </div>
+                                </a>
+                                <a href="#" class="users__delete">Удалить</a>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>
                 <div class="users__wrapper">
                     <h3 class="page__title">Гномы:</h3>
                     <ul class="users__list">
-                        <?php foreach ($all_users as $user) : ?>
-                            <?php if ($user['role'] == 'dwarf' || $user['role'] == 'master-dwarf') : ?>
-                                <li class="users__item users__item--dwarf">
-                                    <a href="#" class="users__link">
-                                        <span class="users__name"> <?= $user['NAME']; ?> </span>
-                                        <div class="users__data">
-                                            <span class="users__gems">Добыто: </span>
-                                        </div>
-                                    </a>
+                        <?php foreach ($dwarfs as $dwarf) : ?>
+                            <li class="users__item users__item--dwarf">
+                                <a href="#" class="users__link">
+                                    <span class="users__name"> <?= $dwarf['NAME']; ?> </span>
+                                    <div class="users__data">
+                                        <span class="users__gems">Добыто: <?= $dwarf['mined_gems']; ?></span>
+                                    </div>
+                                </a>
+                                <?php if ($dwarf['role'] == 'master_dwarf') : ?>
                                     <span class="users__master-icon">М</span>
-                                    <a href="#" class="users__delete">Удалить</a>
-                                </li>
-                            <?php endif; ?>
+                                <?php endif; ?>
+                                <a href="#" class="users__delete">Удалить</a>
+                            </li>
                         <?php endforeach; ?>
                     </ul>
                 </div>

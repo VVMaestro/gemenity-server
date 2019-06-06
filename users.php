@@ -10,13 +10,25 @@ $title = 'Добавить камни';
 
 if ($user) {
     $connect = connect_to_db($database);
-    $sql_request = 'SELECT * FROM users';
-    $result = mysqli_query($connect, $sql_request);
-    error_check($connect, $result);
 
-    $all_users = mysqli_fetch_all($result, MYSQLI_ASSOC);
+    $elf_result = mysqli_query($connect, $elf_request);
+    error_check($connect, $elf_result);
 
-    $page_content = renderTemplate('users.tmp', ['all_users' => $all_users]);
+    $dwarf_result = mysqli_query($connect, $dwarf_request);
+    error_check($connect, $dwarf_result);
+
+    $preference_result = mysqli_query($connect, $preference_request);
+    error_check($connect, $preference_result);
+
+    $elves = mysqli_fetch_all($elf_result, MYSQLI_ASSOC);
+    $dwarfs = mysqli_fetch_all($dwarf_result, MYSQLI_ASSOC);
+    $preferences = mysqli_fetch_all($preference_result, MYSQLI_ASSOC);
+
+    $page_content = renderTemplate('users.tmp', [
+        'elves' => $elves,
+        'dwarfs' => $dwarfs,
+        'prefs' => $preferences
+    ]);
 } else {
     header('Location: /index.php');
 }

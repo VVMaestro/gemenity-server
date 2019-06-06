@@ -58,3 +58,21 @@ function find_user ($login, $con) {
         return $user;
     }
 }
+
+function get_elf_prefs ($login, $prefs) {
+    $elf_prefs = [];
+    foreach ($prefs as $pref) {
+        if ($pref['login'] == $login) {
+            array_push($elf_prefs, $pref);
+        }
+    }
+    return $elf_prefs;
+}
+
+function sort_prefs ($prefs) {
+    usort($prefs, function ($a, $b) {
+        if ($a['rating'] < $b['rating']) return -1;
+        elseif ($a['rating'] > $b['rating']) return 1;
+        else return 0;
+    });
+}

@@ -44,3 +44,32 @@ CREATE TABLE preferences (
     user     INT,
     rating   FLOAT
 );
+
+-- Добавление камней
+INSERT INTO gems (TYPE, mine_dwarf, assign_elf, confirmation_master, mine_date, assign_date, confirmation_date, assigned_by, STATUS)
+VALUES (7, 3, 1, 3, CURDATE(), CURDATE(), CURDATE(), 'manually', 'assigned');
+
+-- Пользователи с камнями
+SELECT gems.id, login, role, users.NAME, gem_type.NAME AS 'type' FROM gems
+    JOIN users ON users.id = gems.assign_elf OR users.id = gems.mine_dwarf
+    JOIN gem_type ON gem_type.id = gems.type;
+
+-- Камни и назначенные им эльфы
+SELECT gems.id, login, role, users.NAME, gem_type.NAME AS 'type' FROM gems
+    JOIN users ON users.id = gems.assign_elf
+    JOIN gem_type ON gem_type.id = gems.TYPE;
+
+-- Камни и добывшие их гномы
+SELECT gems.id, login, role, users.NAME, gem_type.NAME AS 'type' FROM gems
+    JOIN users ON users.id = gems.mine_dwarf
+    JOIN gem_type ON gem_type.id = gems.TYPE;
+
+-- ?
+SELECT login, COUNT(*) FROM users
+    JOIN gems ON users.id = mine_dwarf
+GROUP BY login;
+
+-- Предпочтения
+SELECT login, gem_type.name, rating FROM preferences
+    JOIN users ON users.id = preferences.USER
+    JOIN gem_type ON preferences.gem_type = gem_type.id;
