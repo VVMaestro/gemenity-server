@@ -8,6 +8,12 @@ $database = [
     'port' => '3306'
 ];
 
+$actions = [
+    'create_user' => function () {
+
+    }
+];
+
 $dwarf_request = 'SELECT login, users.NAME, COUNT(*) AS mined_gems FROM users
                         JOIN gems ON users.id = mine_dwarf
                         GROUP BY login, users.NAME';

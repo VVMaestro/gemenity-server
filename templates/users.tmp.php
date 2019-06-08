@@ -29,8 +29,9 @@
                                                 $elf_prefs = get_elf_prefs($elf['login'], $prefs);
                                                 $sorted_prefs = sort_prefs($elf_prefs);
                                             ?>
-                                            <?php foreach ()
-                                            <li class="users__like-item">Хризолит</li>
+                                            <?php for ($i = 0; $i <= 3; $i++) : ?>
+                                                <li class="users__like-item"><?= $sorted_prefs[$i]['name']; ?></li>
+                                            <?php endfor; ?>
                                         </ul>
                                     </div>
                                 </a>
@@ -60,7 +61,7 @@
                 </div>
                 <div class="users__wrapper">
                     <h3 class="page__title">Создать пользователя:</h3>
-                    <form action="" method="post">
+                    <form action="../control.php?action=create_user" method="post">
                         <label for="new-name" class="users__label">
                             Имя нового пользователя:
                         </label>

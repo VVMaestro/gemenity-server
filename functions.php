@@ -34,9 +34,10 @@ function error_check ($con, $result) {
     }
 }
 
-function createUser($login, $password, $name, $role, $con) {
+function create_user($login, $password, $name, $role, $con) {
+    $hashed_pass = hash('md5', $password);
     $sql_request = 'INSERT INTO users (login, password, name, role, status, registration_date)
-                    VALUES ('. $login . ',' . $password . ',' . $name . ',' . $role . ',' . '"active", CURDATE())';
+                    VALUES ('. $login . ',' . $hashed_pass . ',' . $name . ',' . $role . ',' . '"active", CURDATE())';
     $result = mysqli_query($con, $sql_request);
 
     error_check($con, $result);
