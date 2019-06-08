@@ -70,7 +70,7 @@ function get_elf_prefs ($login, $prefs) {
 }
 
 function sort_prefs ($prefs) {
-    usort($prefs, function ($a, $b) {
+    return usort($prefs, function ($a, $b) {
         if ($a['rating'] < $b['rating']) return -1;
         elseif ($a['rating'] > $b['rating']) return 1;
         else return 0;

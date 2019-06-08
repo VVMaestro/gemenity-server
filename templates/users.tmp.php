@@ -25,9 +25,12 @@
                                         <span class="users__gems">Получено: <?= $elf['assigned_gems'] ?> </span>
                                         <span class="users__gems">Любимые: </span>
                                         <ul class="users__like-list">
+                                            <?php
+                                                $elf_prefs = get_elf_prefs($elf['login'], $prefs);
+                                                $sorted_prefs = sort_prefs($elf_prefs);
+                                            ?>
+                                            <?php foreach ()
                                             <li class="users__like-item">Хризолит</li>
-                                            <li class="users__like-item">Алмаз</li>
-                                            <li class="users__like-item">Корунд</li>
                                         </ul>
                                     </div>
                                 </a>
