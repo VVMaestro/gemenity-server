@@ -8,19 +8,15 @@ $database = [
     'port' => '3306'
 ];
 
-$actions = [
-    'create_user' => function () {
-
-    }
-];
-
-$dwarf_request = 'SELECT login, users.NAME, COUNT(*) AS mined_gems FROM users
+$dwarf_request = 'SELECT login, COUNT(*) AS mined_gems FROM users
                         JOIN gems ON users.id = mine_dwarf
-                        GROUP BY login, users.NAME';
+                        GROUP BY login';
 
-$elf_request = 'SELECT login, users.NAME, COUNT(*) AS assigned_gems FROM users
+$elf_request = 'SELECT login, COUNT(*) AS assigned_gems FROM users
                         JOIN gems ON users.id = assign_elf
-                        GROUP BY login, users.NAME';
+                        GROUP BY login';
+
+$all_users_request = 'SELECT login, NAME, role, status FROM users';
 
 $preference_request = 'SELECT login, gem_type.name, rating FROM preferences
                             JOIN users ON users.id = preferences.USER
