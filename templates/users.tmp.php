@@ -42,7 +42,8 @@
                                             </ul>
                                         </div>
                                     </a>
-                                    <a href="#" class="users__delete">Удалить</a>
+                                    <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
+                                    <a href="<?= $link ?>" class="users__delete">Удалить</a>
                                 </li>
                             <?php endif ?>
                         <?php endforeach; ?>
@@ -69,7 +70,8 @@
                                     <?php if (isUserMaster($user)) : ?>
                                         <span class="users__master-icon">М</span>
                                     <?php endif; ?>
-                                    <a href="#" class="users__delete">Удалить</a>
+                                    <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
+                                    <a href="<?= $link ?>" class="users__delete">Удалить</a>
                                 </li>
                             <?php endif ?>
                         <?php endforeach; ?>

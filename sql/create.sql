@@ -45,6 +45,11 @@ CREATE TABLE preferences (
     rating   FLOAT
 );
 
+-- Удаление пользователя
+UPDATE users
+SET STATUS = 'deleted'
+WHERE login = 'levi';
+
 -- Добавление камней
 INSERT INTO gems (TYPE, mine_dwarf, assign_elf, confirmation_master, mine_date, assign_date, confirmation_date, assigned_by, STATUS)
 VALUES (7, 3, 1, 3, CURDATE(), CURDATE(), CURDATE(), 'manually', 'assigned');

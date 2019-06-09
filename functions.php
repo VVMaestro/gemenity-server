@@ -59,6 +59,15 @@ function create_user($login, $password, $name, $role, $con) {
     error_check($con, $result);
 }
 
+function delete_user($login, $con) {
+    $sql_request = 'UPDATE users
+        SET STATUS = "deleted"
+        WHERE login = "' . $login . '"';
+    $result = mysqli_query($con, $sql_request);
+
+    error_check($con, $result);
+}
+
 function find_user ($login, $con) {
     $sql_request = 'SELECT * FROM users
                     WHERE login = "' . $login . '"';

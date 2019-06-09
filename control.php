@@ -36,6 +36,13 @@ switch ($action) {
         header('Location: /users.php');
         break;
     case 'delete_user' :
+        if (isUserMaster($user)) {
+            $connection = connect_to_db($database);
+            $del_user = $_GET['login'];
+            delete_user($del_user, $connection);
+        } else {
+            $_SESSION['messages']['denied'] = 'Только мастер-гном может удалять пользователей';
+        }
         header('Location: /users.php');
         break;
 }
