@@ -1,22 +1,32 @@
 <?php
 
 require_once 'functions.php';
+require_once 'data.php';
 
 session_start();
 
 $user = $_SESSION['user'];
 $title = 'Страница гнома';
 
-if ($user && $user['role'] == 'dwarf') {
+if ($user && (isUserDwarf($user) || isUserMaster($user))) {
+    $dwarf_gems_request = 'SELECT gem_type.NAME AS name, COUNT(*) AS num FROM gems
+                            JOIN users ON users.id = gems.mine_dwarf
+                            JOIN gem_type ON gem_type.id = gems.TYPE
+                            WHERE login = "'. $user['login'] .'"
+                            GROUP BY NAME';
+    $dwarf_gems = get_db_data($database, $dwarf_gems_request);
+
     $page_content = renderTemplate('dwarf-profile', [
         'login' => $user['login'],
         'NAME' => $user['NAME'],
         'status' => $user['status'],
+        'role' => $user['role'],
         'registration_date' => $user['registration_date'],
-        'deleted_date' => $user['deleted_date']
+        'deleted_date' => $user['deleted_date'],
+        'dwarf_gems' => $dwarf_gems
     ]);
     $title = $user['NAME'];
-} elseif ($user['role'] == 'elf') {
+} elseif (isUserElf($user)) {
     header('Location: /elf.php');
 } else {
     header('Location: /index.php');

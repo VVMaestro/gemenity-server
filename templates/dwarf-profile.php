@@ -4,34 +4,33 @@
             <h2 class="page__title">Добро пожаловать <?= $NAME; ?>!</h2>
             <div class="profile__colums">
                 <div class="profile__col">
-                    <form>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Логин</legend>
-                            <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
-                            <input type="submit" class="button profile__button" value="Обновить">
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-login">
+                                <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Сменить пароль</legend>
-                            <input class="input profile__input" type="password" name="password-old" value=""
-                                   placeholder="Старый пароль">
-                            <input class="input profile__input" type="password" name="password-new" value=""
-                                   placeholder="Новый пароль">
-                            <input type="submit" class="button profile__button" value="Обновить">
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-password">
+                                <input class="input profile__input" type="password" name="password-old" value=""
+                                       placeholder="Старый пароль">
+                                <input class="input profile__input" type="password" name="password-new" value=""
+                                       placeholder="Новый пароль">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Имя</legend>
-                            <div class="profile__inner-colums">
-                                <div class="profile__wrapper">
-                                    <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
-                                    <input type="submit" class="button profile__button" value="Обновить">
-                                </div>
-                                <label class="profile__checkbox">
-                                    <input type="checkbox" name="master-dwarf">
-                                    Мастер гном
-                                </label>
-                            </div>
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-name">
+                                <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
-                    </form>
                 </div>
                 <div class="profile__col">
                     <fieldset class="profile__field">
@@ -55,53 +54,34 @@
                             <? endif; ?>
                         </ul>
                     </fieldset>
+                    <fieldset class="profile__field">
+                        <legend class="profile__title">Метка мастера</legend>
+                        <form action="/control.php" method="post">
+                            <input type="hidden" name="action" value="change-master">
+                            <label class="profile__checkbox">
+                                <input type="checkbox"
+                                       name="master-dwarf" <?php if ($role == 'master-dwarf') print('checked') ?>>
+                                Мастер гном
+                            </label>
+                            <input type="submit" class="button profile__button" value="Обновить">
+                        </form>
+                    </fieldset>
                 </div>
             </div>
             <div class="profile__colums">
                 <div class="profile__col">
                     <fieldset class="profile__field">
                         <legend class="profile__title">Добытые камни</legend>
-                        <form action="" method="POST">
                             <ul class="profile__list gem__list">
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Хризолит</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name1" value="0" min="0" readonly>
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Алмаз</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name2" value="0" min="0" readonly>
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Цитрин</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name3" value="0" min="0" readonly>
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Хризолит</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name1" value="0" min="0" readonly>
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Алмаз</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name2" value="0" min="0" readonly>
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Цитрин</span>
-                                        <input class="input input--readonly gem__input" type="number" name="gem-name3" value="0" min="0" readonly>
-                                    </label>
-                                </li>
+                                <?php foreach ($dwarf_gems as $gem): ?>
+                                    <li class="gem__item">
+                                        <label>
+                                            <span class="gem__text"><?= $gem['name']; ?></span>
+                                            <input class="input input--readonly gem__input" type="number" value="<?= $gem['num']; ?>" min="0" readonly>
+                                        </label>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
-                            <input type="submit" class="button profile__button" value="Добавить камни">
-                        </form>
                     </fieldset>
                 </div>
             </div>

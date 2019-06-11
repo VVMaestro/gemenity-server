@@ -21,3 +21,5 @@ $all_users_request = 'SELECT login, NAME, role, status FROM users';
 $preference_request = 'SELECT login, gem_type.name, rating FROM preferences
                             JOIN users ON users.id = preferences.USER
                             JOIN gem_type ON preferences.gem_type = gem_type.id';
+
+$gem_types_request = 'SELECT * FROM gem_type';

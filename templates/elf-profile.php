@@ -4,24 +4,33 @@
             <h2 class="page__title">Добро пожаловать <?= $NAME; ?>!</h2>
             <div class="profile__colums">
                 <div class="profile__col">
-                    <form>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Логин</legend>
-                            <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
-                            <input type="submit" class="button profile__button" value="Обновить">
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-login">
+                                <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Сменить пароль</legend>
-                            <input class="input profile__input" type="password" name="password-old" value="" placeholder="Старый пароль">
-                            <input class="input profile__input" type="password" name="password-new" value="" placeholder="Новый пароль">
-                            <input type="submit" class="button profile__button" value="Обновить">
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-password">
+                                <input class="input profile__input" type="password" name="password-old" value=""
+                                       placeholder="Старый пароль">
+                                <input class="input profile__input" type="password" name="password-new" value=""
+                                       placeholder="Новый пароль">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
                         <fieldset class="profile__field">
                             <legend class="profile__title">Имя</legend>
-                            <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
-                            <input type="submit" class="button profile__button" value="Обновить">
+                            <form action="/control.php" method="post">
+                                <input type="hidden" name="action" value="change-name">
+                                <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
+                                <input type="submit" class="button profile__button" value="Обновить">
+                            </form>
                         </fieldset>
-                    </form>
                 </div>
                 <div class="profile__col">
                     <fieldset class="profile__field">
@@ -49,50 +58,19 @@
                 <div class="profile__col">
                     <fieldset class="profile__field">
                         <legend class="profile__title">Предпочтения</legend>
-                        <form action="" method="POST">
+                        <form action="/control.php" method="POST">
+                            <input type="hidden" name="action" value="update-prefs">
                             <ul class="profile__list gem__list">
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Хризолит</span>
-                                        <input class="input gem__input" type="number" name="gem-name1" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Алмаз</span>
-                                        <input class="input gem__input" type="number" name="gem-name2" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Цитрин</span>
-                                        <input class="input gem__input" type="number" name="gem-name3" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Хризолит</span>
-                                        <input class="input gem__input" type="number" name="gem-name1" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Алмаз</span>
-                                        <input class="input gem__input" type="number" name="gem-name2" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
-                                <li class="gem__item">
-                                    <label>
-                                        <span class="gem__text">Цитрин</span>
-                                        <input class="input gem__input" type="number" name="gem-name3" value="0" min="0" max="1"
-                                               step="0.01">
-                                    </label>
-                                </li>
+                                <?php foreach ($gem_types as $type): ?>
+                                    <li class="gem__item">
+                                        <label>
+                                            <span class="gem__text"><?= $type['name']; ?></span>
+                                            <input class="input gem__input" type="number" name="<?= $type['id']; ?>" value="0"
+                                                   min="0" max="1"
+                                                   step="0.01">
+                                        </label>
+                                    </li>
+                                <?php endforeach; ?>
                             </ul>
                             <input type="submit" class="button profile__button" value="Обновить">
                         </form>

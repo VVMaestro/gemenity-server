@@ -78,3 +78,10 @@ GROUP BY login;
 SELECT login, gem_type.name, rating FROM preferences
     JOIN users ON users.id = preferences.USER
     JOIN gem_type ON preferences.gem_type = gem_type.id;
+
+-- Число камней каждого типа, добытых определённым гномом
+SELECT gem_type.NAME AS 'name', COUNT(*) FROM gems
+    JOIN users ON users.id = gems.mine_dwarf
+    JOIN gem_type ON gem_type.id = gems.TYPE
+WHERE login = 'gimli'
+GROUP BY NAME

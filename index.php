@@ -23,7 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $auth_user = find_user($post_data['login'], $connect);
     if (!count($errors) && $auth_user) {
         //Проверка совпадения пароля
-        if (password_verify($post_data['password'], $auth_user['password']) || $post_data['password'] == $auth_user['password']) {
+        $hashed_pass = hash('md5', $post_data['password']);
+        if (hash_equals($hashed_pass, $auth_user['password']) || $post_data['password'] == $auth_user['password']) {
             $_SESSION['user'] = $auth_user;
         } else {
             $errors['password'] = 'Неверный пароль';
