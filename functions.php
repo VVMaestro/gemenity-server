@@ -34,11 +34,15 @@ function error_check ($con, $result) {
     }
 }
 
-function get_db_data($db, $request) {
-    $connect = connect_to_db($db);
-    $result = mysqli_query($connect, $request);
-    error_check($connect, $result);
+function get_db_data($con, $request) {
+    $result = mysqli_query($con, $request);
+    error_check($con, $result);
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
+}
+
+function change_db_data($con, $request) {
+    $result = mysqli_query($con, $request);
+    error_check($con, $result);
 }
 
 function isUserElf ($user) {

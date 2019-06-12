@@ -10,7 +10,7 @@ $user = $_SESSION['user'];
 $title = 'Добавление камней';
 
 if ($user && ($user['role'] == 'dwarf' || 'master-dwarf')) {
-    $gem_types = get_db_data($database, $gem_types_request);
+    $gem_types = get_db_data($connect, $gem_types_request);
 
     $page_content = renderTemplate('add-gems.tmp', [
         'gem_types' => $gem_types

@@ -1,14 +1,15 @@
 <main>
     <div class="container">
         <section class="page__section">
-            <h2 class="page__title">Добро пожаловать <?= $NAME; ?>!</h2>
+            <h2 class="page__title">Добро пожаловать <?=$NAME;?>!</h2>
             <div class="profile__colums">
                 <div class="profile__col">
                         <fieldset class="profile__field">
                             <legend class="profile__title">Логин</legend>
                             <form action="/control.php" method="post">
                                 <input type="hidden" name="action" value="change-login">
-                                <input class="input profile__input" type="text" name="login" value=" <?= $login; ?> ">
+                                <input type="hidden" name="changed_user" value="<?=$login;?>">
+                                <input class="input profile__input" type="text" name="login" value="<?=$login;?>">
                                 <input type="submit" class="button profile__button" value="Обновить">
                             </form>
                         </fieldset>
@@ -16,10 +17,11 @@
                             <legend class="profile__title">Сменить пароль</legend>
                             <form action="/control.php" method="post">
                                 <input type="hidden" name="action" value="change-password">
-                                <input class="input profile__input" type="password" name="password-old" value=""
-                                       placeholder="Старый пароль">
+                                <input type="hidden" name="changed_user" value="<?=$login;?>">
                                 <input class="input profile__input" type="password" name="password-new" value=""
                                        placeholder="Новый пароль">
+                                <input class="input profile__input" type="password" name="password-repeat" value=""
+                                       placeholder="Повторите пароль">
                                 <input type="submit" class="button profile__button" value="Обновить">
                             </form>
                         </fieldset>
@@ -27,7 +29,8 @@
                             <legend class="profile__title">Имя</legend>
                             <form action="/control.php" method="post">
                                 <input type="hidden" name="action" value="change-name">
-                                <input class="input profile__input" type="text" name="name" value=" <?= $NAME; ?> ">
+                                <input type="hidden" name="changed_user" value="<?=$login;?>">
+                                <input class="input profile__input" type="text" name="name" value="<?=$NAME;?>">
                                 <input type="submit" class="button profile__button" value="Обновить">
                             </form>
                         </fieldset>
@@ -66,6 +69,9 @@
                             <input type="submit" class="button profile__button" value="Обновить">
                         </form>
                     </fieldset>
+                    <div>
+                        <?php if (isset($messages['change'])) print ($messages['change']) ?>
+                    </div>
                 </div>
             </div>
             <div class="profile__colums">
