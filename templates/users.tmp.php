@@ -26,7 +26,7 @@
                                     }
                                 ?>
                                 <li class="users__item users__item--elf">
-                                    <a href="#" class="users__link">
+                                    <a href="/<?=get_user_page($user);?>" class="users__link">
                                         <span class="users__name"><?= $user['NAME']; ?></span>
                                         <div class="users__data">
                                             <span class="users__gems">Получено: <?= $elf_data['assigned_gems'] ?> </span>
@@ -61,8 +61,8 @@
                                     }
                                 ?>
                                 <li class="users__item users__item--dwarf">
-                                    <a href="#" class="users__link">
-                                        <span class="users__name"> <?= $user['NAME']; ?> </span>
+                                    <a href="/<?=get_user_page($user);?>" class="users__link">
+                                        <span class="users__name"><?= $user['NAME']; ?></span>
                                         <div class="users__data">
                                             <span class="users__gems">Добыто: <?= $dwarf_data['mined_gems']; ?></span>
                                         </div>

@@ -47,6 +47,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             exit();
         } else if (isUserMaster($auth_user)) {
             header('Location: /users.php');
+            exit();
         }
     }
 } else {

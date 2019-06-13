@@ -16,7 +16,7 @@ $elf_request = 'SELECT login, COUNT(*) AS assigned_gems FROM users
                         JOIN gems ON users.id = assign_elf
                         GROUP BY login';
 
-$all_users_request = 'SELECT login, NAME, role, status FROM users';
+$all_users_request = 'SELECT * FROM users';
 
 $preference_request = 'SELECT login, gem_type.name, rating FROM preferences
                             JOIN users ON users.id = preferences.USER

@@ -112,3 +112,13 @@ function sort_prefs ($prefs) {
         else return 0;
     });
 }
+
+function get_user_page ($user) {
+    if ($user['role'] == 'elf') {
+        $page = 'elf';
+    } else {
+        $page = 'dwarf';
+    }
+
+    return $page . '.php?page_owner=' . $user['login'];
+}
