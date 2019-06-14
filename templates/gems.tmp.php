@@ -4,7 +4,7 @@
             <h2 class="page__title">Список драгоценностей</h2>
             <div class="gem-info__filter filter">
                 <h3 class="filter__title">Отфильтровать по: </h3>
-                <form action="#" method="POST">
+                <form action="/gems.php" method="POST">
                     <div class="filter__wrapper">
                         <select id="gem-filter" name="filter" class="input filter__input">
                             <option value="elf">Назначены эльфу</option>
@@ -20,14 +20,16 @@
                         <input type="date" name="date" class="input filter__input" id="js-date">
                         <input type="text" name="text" class="input filter__input" id="js-text">
                         <select name="type" class="input filter__input" id="js-type">
-                            <option value="hrizolit">Хризолит</option>
-                            <option value="opal">Опал</option>
+                            <?php foreach ($gem_types as $type) : ?>
+                            <option value="<?= $type['name']; ?>"><?= $type['name']; ?></option>
+                            <?php endforeach; ?>
                         </select>
                         <select name="status" class="input filter__input" id="js-status">
-                            <option value="assign">Назначена</option>
+                            <option value="assigned">Назначена</option>
                             <option value="confirmed">Подтверждена</option>
-                            <option value="not-assign">Не назначена</option>
+                            <option value="not_assigned">Не назначена</option>
                         </select>
+                        <input type="submit" class="button" value="Фильтровать">
                     </div>
                 </form>
             </div>
