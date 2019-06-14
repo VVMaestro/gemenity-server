@@ -33,8 +33,8 @@
                                             <span class="users__gems">Любимые: </span>
                                             <ul class="users__like-list">
                                                 <?php
-                                                $elf_prefs = get_elf_prefs($user['login'], $prefs);
-                                                sort_prefs($elf_prefs);
+                                                    $elf_prefs = get_elf_prefs($user['login'], $prefs);
+                                                    sort_prefs($elf_prefs);
                                                 ?>
                                                 <?php for ($i = 0; $i <= 3; $i++) : ?>
                                                     <li class="users__like-item"><?= $elf_prefs[$i]['name']; ?></li>

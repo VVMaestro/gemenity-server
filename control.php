@@ -13,10 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $action = $_GET['action'];
 }
 
+$connection = connect_to_db($database);
+$changed_user = find_user($_POST['changed_user'], $connection);
+
 switch ($action) {
     case 'create_user' :
         if (isUserMaster($user)) {
-            $connection = connect_to_db($database);
 
             if (!find_user($_POST['login'], $connection)) {
                 create_user(
@@ -38,7 +40,6 @@ switch ($action) {
 
     case 'delete_user' :
         if (isUserMaster($user)) {
-            $connection = connect_to_db($database);
             $del_user = $_GET['login'];
             delete_user($del_user, $connection);
         } else {
@@ -48,9 +49,6 @@ switch ($action) {
         break;
 
     case 'change-login' :
-        $connection = connect_to_db($database);
-        $changed_user = find_user($_POST['changed_user'], $connection);
-
         if (isUserMaster($user) || $user['login'] == $changed_user['login']) {
             $new_login = trim($_POST['login']);
             $users_logins = get_db_data($connection, 'SELECT login FROM users');
@@ -82,9 +80,6 @@ switch ($action) {
         break;
 
     case 'change-password':
-        $connection = connect_to_db($database);
-        $changed_user = find_user($_POST['changed_user'], $connection);
-
         if (isUserMaster($user) || $user['login'] == $changed_user['login']) {
             if ($_POST['password-new'] == $_POST['password-repeat']) {
                 $new_password = $_POST['password-new'];
@@ -110,9 +105,6 @@ switch ($action) {
         }
         break;
     case 'change-name':
-        $connection = connect_to_db($database);
-        $changed_user = find_user($_POST['changed_user'], $connection);
-
         if (isUserMaster($user) || $user['login'] == $changed_user['login']) {
             $new_name = $_POST['name'];
             $change_name_request = 'UPDATE users
@@ -128,4 +120,46 @@ switch ($action) {
             header('Location: /' . get_user_page($changed_user));
             break;
         }
+        break;
+    case 'update-prefs':
+        $new_prefs = [];
+        foreach ($_POST as $key => $item) {
+            if ($key != 'changed_user' || $key != 'action') {
+                $new_prefs[$key] = floatval($item);
+            }
+        }
+
+        $rating_sum = array_reduce($new_prefs, function ($sum, $item, $initial = 0) {
+            $sum += $item;
+            return $sum;
+        });
+
+        if ($rating_sum > 1) {
+            $_SESSION['messages']['denied'] = 'Сумма предпочтений не может быть больше единицы';
+            header('Location: ' . get_user_page($changed_user));
+            exit();
+        }
+
+        $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
+                            LEFT JOIN 
+                            (SELECT * FROM preferences WHERE USER = "' . $changed_user['id'] . '") AS elf_prefs
+                            ON gem_type.id = gem_type';
+        $elf_prefs = get_db_data($connection, $elf_prefs_request);
+
+        foreach ($elf_prefs as $pref) {
+            if ($pref['rating'] == null) {
+                $pref_request = 'INSERT INTO preferences (gem_type, user, rating)
+                                        VALUES ("'. $pref['id'] . '","'. $changed_user['id'] . '","'. $new_prefs[$pref['id']] . '")';
+            } else {
+                $pref_request = 'UPDATE preferences
+                                 SET rating = "' . $new_prefs[$pref['id']] . '"
+                                 WHERE gem_type = "' . $pref['id'] . '" AND user = "' . $changed_user['id'] . '"';
+            }
+
+            change_db_data($connection, $pref_request);
+        }
+        $_SESSION['messages']['success'] = 'Предпочтения обновлены';
+        header('Location: ' . get_user_page($changed_user));
+        exit();
+        break;
 }

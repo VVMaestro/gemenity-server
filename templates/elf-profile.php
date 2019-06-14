@@ -56,7 +56,11 @@
                         </ul>
                     </fieldset>
                     <div>
-                        <?php if (isset($messages['change'])) print ($messages['change']) ?>
+                        <?php if (isset($messages)) {
+                            foreach ($messages as $message) {
+                                print ($message);
+                            };
+                        } ?>
                     </div>
                 </div>
             </div>
@@ -65,15 +69,17 @@
                     <fieldset class="profile__field">
                         <legend class="profile__title">Предпочтения</legend>
                         <form action="/control.php" method="POST">
+                            <input type="hidden" name="changed_user" value="<?=$login;?>">
                             <input type="hidden" name="action" value="update-prefs">
                             <ul class="profile__list gem__list">
-                                <?php foreach ($gem_types as $type): ?>
+                                <?php foreach ($elf_prefs as $pref): ?>
                                     <li class="gem__item">
                                         <label>
-                                            <span class="gem__text"><?= $type['name']; ?></span>
-                                            <input class="input gem__input" type="number" name="<?= $type['id']; ?>" value="0"
+                                            <span class="gem__text"><?= $pref['name']; ?></span>
+                                            <input class="input gem__input" type="number" name="<?= $pref['id']; ?>"
+                                                   value="<?php if ($pref['rating'] != null) print($pref['rating']); else print ('0');?>"
                                                    min="0" max="1"
-                                                   step="0.01">
+                                                   step="0.05">
                                         </label>
                                     </li>
                                 <?php endforeach; ?>

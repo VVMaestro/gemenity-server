@@ -28,7 +28,11 @@ if (isset($_SESSION['messages'])) {
 }
 
 if ($user) {
-    $gem_types = get_db_data($connection, $gem_types_request);
+    $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
+                            LEFT JOIN 
+                            (SELECT * FROM preferences WHERE USER = ' . $page_owner['id'] . ') AS elf_prefs
+                            ON gem_type.id = gem_type';
+    $elf_prefs = get_db_data($connection, $elf_prefs_request);
 
     $page_content = renderTemplate('elf-profile', [
         'login' => $page_owner['login'],
@@ -36,7 +40,7 @@ if ($user) {
         'status' => $page_owner['status'],
         'registration_date' => $page_owner['registration_date'],
         'delete_date' => $page_owner['delete_date'],
-        'gem_types' => $gem_types,
+        'elf_prefs' => $elf_prefs,
         'messages' => $messages
     ]);
     $title = $page_owner['NAME'];
