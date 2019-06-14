@@ -84,4 +84,20 @@ SELECT gem_type.NAME AS 'name', COUNT(*) FROM gems
     JOIN users ON users.id = gems.mine_dwarf
     JOIN gem_type ON gem_type.id = gems.TYPE
 WHERE login = 'gimli'
-GROUP BY NAME
+GROUP BY NAME;
+
+-- Запрос камней
+SELECT gem_type.NAME,
+       elfs.NAME AS assign_elf,
+       dwarfs.NAME AS mined_dwarf,
+       masters.NAME AS confirm_by,
+       mine_date,
+       assign_date,
+       confirmation_date,
+       assigned_by,
+       gems.status
+FROM gems
+    JOIN users AS dwarfs ON dwarfs.id = mine_dwarf
+    left JOIN users AS elfs ON elfs.id = assign_elf
+    LEFT JOIN users AS masters ON masters.id = confirmation_master
+    JOIN gem_type ON gem_type.id = type;
