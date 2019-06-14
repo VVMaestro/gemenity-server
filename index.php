@@ -39,6 +39,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
     //Если ошибок нет - направляем пользователя на соответстующую страницу 
     else {
+        $date_request = 'UPDATE users
+                        SET last_auth = CURDATE()
+                        WHERE id = ' . $auth_user['id'];
+        change_db_data($connect, $date_request);
         if (isUserDwarf($auth_user)) {
             header('Location: /add-gems.php');
             exit();

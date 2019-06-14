@@ -6,10 +6,10 @@
                 <h3 class="filter__title">Отфильтровать по: </h3>
                 <ul class="filter__list">
                     <li class="filter__item">
-                        <a href="#">Статусу</a>
+                        <a href="/users.php?sortby=status">Статусу</a>
                     </li>
                     <li class="filter__item">
-                        <a href="#">Имени</a>
+                        <a href="/users.php?sortby=name">Имени</a>
                     </li>
                 </ul>
             </div>
@@ -18,7 +18,7 @@
                     <h3 class="page__title">Эльфы:</h3>
                     <ul class="users__list">
                         <?php foreach ($all_users as $user) : ?>
-                            <?php if (isUserElf($user) && $user['status'] == 'active'): ?>
+                            <?php if (isUserElf($user)): ?>
                                 <?php
                                     $elf_data = [];
                                     foreach ($elves as $elf) {
@@ -36,14 +36,17 @@
                                                     $elf_prefs = get_elf_prefs($user['login'], $prefs);
                                                     sort_prefs($elf_prefs);
                                                 ?>
-                                                <?php for ($i = 0; $i <= 3; $i++) : ?>
+                                                <?php for ($i = 0; $i < 3; $i++) : ?>
                                                     <li class="users__like-item"><?= $elf_prefs[$i]['name']; ?></li>
                                                 <?php endfor; ?>
                                             </ul>
+                                            <span class="users__gems">Статус: <?=$user['status'];?></span>
                                         </div>
                                     </a>
-                                    <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
-                                    <a href="<?= $link ?>" class="users__delete">Удалить</a>
+                                    <?php if($user['status'] == 'active') : ?>
+                                        <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
+                                        <a href="<?= $link ?>" class="users__delete">Удалить</a>
+                                    <?php endif;?>
                                 </li>
                             <?php endif ?>
                         <?php endforeach; ?>
@@ -53,7 +56,7 @@
                     <h3 class="page__title">Гномы:</h3>
                     <ul class="users__list">
                         <?php foreach ($all_users as $user) : ?>
-                            <?php if ((isUserDwarf($user) || isUserMaster($user)) && $user['status'] == 'active'): ?>
+                            <?php if ((isUserDwarf($user) || isUserMaster($user))): ?>
                                 <?php
                                     $dwarf_data = [];
                                     foreach ($dwarfs as $dwarf) {
@@ -65,13 +68,16 @@
                                         <span class="users__name"><?= $user['NAME']; ?></span>
                                         <div class="users__data">
                                             <span class="users__gems">Добыто: <?= $dwarf_data['mined_gems']; ?></span>
+                                            <span class="users__gems">Статус: <?=$user['status'];?></span>
                                         </div>
                                     </a>
                                     <?php if (isUserMaster($user)) : ?>
                                         <span class="users__master-icon">М</span>
                                     <?php endif; ?>
-                                    <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
-                                    <a href="<?= $link ?>" class="users__delete">Удалить</a>
+                                    <?php if($user['status'] == 'active') : ?>
+                                        <?php $link = '/control.php?action=delete_user&login=' . $user['login'];?>
+                                        <a href="<?= $link ?>" class="users__delete">Удалить</a>
+                                    <?php endif;?>
                                 </li>
                             <?php endif ?>
                         <?php endforeach; ?>

@@ -72,7 +72,7 @@ function create_user($login, $password, $name, $role, $con) {
 
 function delete_user($login, $con) {
     $sql_request = 'UPDATE users
-        SET STATUS = "deleted"
+        SET STATUS = "deleted", deleting_date = CURDATE()
         WHERE login = "' . $login . '"';
     $result = mysqli_query($con, $sql_request);
 

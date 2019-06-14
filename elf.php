@@ -39,6 +39,7 @@ if ($user) {
         'NAME' => $page_owner['NAME'],
         'status' => $page_owner['status'],
         'registration_date' => $page_owner['registration_date'],
+        'last_auth' => $page_owner['last_auth'],
         'delete_date' => $page_owner['delete_date'],
         'elf_prefs' => $elf_prefs,
         'messages' => $messages

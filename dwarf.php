@@ -41,6 +41,7 @@ if ($user) {
         'status' => $page_owner['status'],
         'role' => $page_owner['role'],
         'registration_date' => $page_owner['registration_date'],
+        'last_auth' => $page_owner['last_auth'],
         'deleted_date' => $page_owner['deleted_date'],
         'dwarf_gems' => $dwarf_gems,
         'messages' => $messages

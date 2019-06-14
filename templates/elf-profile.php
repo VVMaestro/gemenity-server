@@ -40,7 +40,7 @@
                         <legend class="profile__title">Информация</legend>
                         <ul class="profile__list">
                             <li class="profile__item">Дата регистрации: <?=$registration_date;?> </li>
-                            <li class="profile__item">Дата последней авторизации: </li>
+                            <li class="profile__item">Дата последней авторизации: <?=$last_auth;?></li>
                             <li class="profile__item">
                                 Статус: <?php if($status == 'active') {
                                     print('Активен');

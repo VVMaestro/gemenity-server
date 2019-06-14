@@ -17,6 +17,25 @@ if (isset($user)) {
     $dwarfs = get_db_data($connect, $dwarf_request);
     $preferences = get_db_data($connect, $preference_request);
 
+    if(isset($_GET['sortby'])) {
+        switch ($_GET['sortby']) {
+            case 'status':
+                usort($all_users, function ($left, $right) {
+                    if ($left['status'] == 'active' && $right['status'] == 'deleted') return -1;
+                    if ($left['status'] == 'deleted' && $right['status'] == 'active') return 1;
+                    if ($left['status'] == $right['status']) return 0;
+                });
+                break;
+            case 'name':
+                usort($all_users, function ($left, $right) {
+                    if ($left['NAME'] == $right['NAME']) return 0;
+                    if ($left['NAME'] < $right['NAME']) return -1;
+                    if ($left['NAME'] > $right['NAME']) return 1;
+                });
+                break;
+        }
+    }
+
     if (isset($_SESSION['messages'])) {
         $messages = $_SESSION['messages'];
         $_SESSION['messages'] = null;
