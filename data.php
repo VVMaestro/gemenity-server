@@ -38,3 +38,17 @@ FROM gems
     left JOIN users AS elfs ON elfs.id = assign_elf
     LEFT JOIN users AS masters ON masters.id = confirmation_master
     JOIN gem_type ON gem_type.id = type;';
+
+$unassign_gems_request = 'SELECT gems.id AS gem_id, gem_type.id AS type_id, gem_type.NAME AS type, users.name AS mine_dwarf, mine_date FROM gems
+                          JOIN users ON mine_dwarf = users.id
+                          JOIN gem_type ON gems.TYPE = gem_type.id
+                          WHERE gems.STATUS = "not_assigned"';
+
+$all_elves_request = 'SELECT * FROM users
+                      WHERE role = "elf"';
+
+$active_elves_request = 'SELECT * FROM users
+                         WHERE role = "elf" and status != "deleted"';
+
+$code_prefs_request = 'SELECT login, gem_type, rating FROM preferences
+                        JOIN users ON users.id = preferences.USER';

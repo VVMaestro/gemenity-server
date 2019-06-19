@@ -34,9 +34,12 @@ function error_check ($con, $result) {
     }
 }
 
-function get_db_data($con, $request) {
+function get_db_data($con, $request, $assoc = false) {
     $result = mysqli_query($con, $request);
     error_check($con, $result);
+    if ($assoc) {
+        return mysqli_fetch_assoc($result);
+    }
     return mysqli_fetch_all($result, MYSQLI_ASSOC);
 }
 
