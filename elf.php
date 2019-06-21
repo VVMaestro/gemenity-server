@@ -29,10 +29,18 @@ if (isset($_SESSION['messages'])) {
 
 if ($user) {
     $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
-                            LEFT JOIN 
-                            (SELECT * FROM preferences WHERE USER = ' . $page_owner['id'] . ') AS elf_prefs
-                            ON gem_type.id = gem_type';
+                          LEFT JOIN 
+                          (SELECT * FROM preferences WHERE USER = ' . $page_owner['id'] . ') AS elf_prefs
+                          ON gem_type.id = gem_type';
+    $elf_assigned_request = 'SELECT gems.id AS gem_id, NAME FROM gems
+                             JOIN gem_type ON TYPE = gem_type.id
+                             WHERE assign_elf = '. $page_owner['id'] .' AND STATUS = "assigned"';
+
     $elf_prefs = get_db_data($connection, $elf_prefs_request);
+
+    if($page_owner['id'] == $user['id']) {
+        $assigned_gems = get_db_data($connection, $elf_assigned_request);
+    }
 
     $page_content = renderTemplate('elf-profile', [
         'login' => $page_owner['login'],
@@ -42,7 +50,8 @@ if ($user) {
         'last_auth' => $page_owner['last_auth'],
         'delete_date' => $page_owner['delete_date'],
         'elf_prefs' => $elf_prefs,
-        'messages' => $messages
+        'messages' => $messages,
+        'assigned_gems' => $assigned_gems
     ]);
     $title = $page_owner['NAME'];
 } else {

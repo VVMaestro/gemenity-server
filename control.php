@@ -14,7 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 }
 
 $connection = connect_to_db($database);
-$changed_user = find_user($_POST['changed_user'], $connection);
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+    $changed_user = find_user($_POST['changed_user'], $connection);
+} else {
+    $changed_user = find_user($_GET['changed_user'], $connection);
+}
+
 
 switch ($action) {
     case 'create_user' :
@@ -162,4 +168,21 @@ switch ($action) {
         header('Location: ' . get_user_page($changed_user));
         exit();
         break;
+    case 'confirm_gem':
+        if ($changed_user['login'] == $user['login']) {
+            $gem_id = $_GET['gem_id'];
+            $confirm_gem_request = 'UPDATE gems
+                                    SET STATUS = "confirmed"
+                                    WHERE id = ' . $gem_id;
+            change_db_data($connection, $confirm_gem_request);
+
+            $_SESSION['messages']['success'] = 'Получение камня подтверждено';
+            header('Location: ' . get_user_page($changed_user));
+            break;
+        } else {
+            $_SESSION['messages']['denied'] = 'Только сами пользователи могу подтверждать полученные камни';
+            header('Location: ' . get_user_page($changed_user));
+            exit();
+            break;
+        }
 }

@@ -89,27 +89,19 @@
                     </fieldset>
                 </div>
                 <section class="profile__col">
-                    <h2 class="profile__title">Ожидающие подтверждения камни:</h2>
-                    <ul class="profile__list">
-                        <li class="gem__item">
+                    <?php if (isset($assigned_gems)): ?>
+                        <h2 class="profile__title">Ожидающие подтверждения камни:</h2>
+                        <ul class="profile__list">
+                            <?php foreach ($assigned_gems as $gem) : ?>
+                                <li class="gem__item">
                                 <span class="gem__text">
-                                    Хризолит
+                                    <?=$gem['NAME'];?>
                                 </span>
-                            <a href="" class="button">Подтвердить</a>
-                        </li>
-                        <li class="gem__item">
-                                <span class="gem__text">
-                                    Хризолит
-                                </span>
-                            <a href="" class="button">Подтвердить</a>
-                        </li>
-                        <li class="gem__item">
-                                <span class="gem__text">
-                                    Хризолит
-                                </span>
-                            <a href="#" class="button">Подтвердить</a>
-                        </li>
-                    </ul>
+                                    <a href="<?='/control.php?action=confirm_gem&gem_id=' . $gem['gem_id'] . '&changed_user=' . $login;?>" class="button">Подтвердить</a>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif ?>
                 </section>
             </div>
         </section>
