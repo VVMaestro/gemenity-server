@@ -31,7 +31,8 @@ if ($user) {
     $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
                           LEFT JOIN 
                           (SELECT * FROM preferences WHERE USER = ' . $page_owner['id'] . ') AS elf_prefs
-                          ON gem_type.id = gem_type';
+                          ON gem_type.id = gem_type
+                          WHERE gem_type.condition != "deleted"';
     $elf_assigned_request = 'SELECT gems.id AS gem_id, NAME FROM gems
                              JOIN gem_type ON TYPE = gem_type.id
                              WHERE assign_elf = '. $page_owner['id'] .' AND STATUS = "assigned"';

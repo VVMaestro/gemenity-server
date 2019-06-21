@@ -31,7 +31,7 @@ if ($user) {
     $dwarf_gems_request = 'SELECT gem_type.NAME AS name, COUNT(*) AS num FROM gems
                             JOIN users ON users.id = gems.mine_dwarf
                             JOIN gem_type ON gem_type.id = gems.TYPE
-                            WHERE login = "'.$page_owner['login'].'"
+                            WHERE login = "'.$page_owner['login'].'" AND gem_type.condition != "deleted"
                             GROUP BY NAME';
     $dwarf_gems = get_db_data($connection, $dwarf_gems_request);
 

@@ -110,6 +110,7 @@ switch ($action) {
             break;
         }
         break;
+
     case 'change-name':
         if (isUserMaster($user) || $user['login'] == $changed_user['login']) {
             $new_name = $_POST['name'];
@@ -127,6 +128,7 @@ switch ($action) {
             break;
         }
         break;
+
     case 'update-prefs':
         $new_prefs = [];
         foreach ($_POST as $key => $item) {
@@ -168,6 +170,7 @@ switch ($action) {
         header('Location: ' . get_user_page($changed_user));
         exit();
         break;
+
     case 'confirm_gem':
         if ($changed_user['login'] == $user['login']) {
             $gem_id = $_GET['gem_id'];
@@ -180,9 +183,67 @@ switch ($action) {
             header('Location: ' . get_user_page($changed_user));
             break;
         } else {
-            $_SESSION['messages']['denied'] = 'Только сами пользователи могу подтверждать полученные камни';
+            $_SESSION['messages']['denied'] = 'Только сами пользователи могут подтверждать полученные камни';
             header('Location: ' . get_user_page($changed_user));
             exit();
             break;
         }
+
+    case 'update-signific':
+
+        if (isUserMaster($user)) {
+            $signifigs = array_filter($_POST, function ($value, $key) {
+                if ($key == 'action') return false;
+                else return true;
+            }, ARRAY_FILTER_USE_BOTH);
+
+            $sign_sum = array_reduce($signifigs, function ($carry, $value) {
+                return $carry + $value;
+            });
+
+            if ($sign_sum > 1) {
+                $_SESSION['messages']['denied'] = 'Значимость не должна быть больше единицы!';
+                header('Location: /settings.php');
+                exit();
+            }
+
+            foreach ($signifigs as $key => $sign) {
+                $update_sign_request = 'UPDATE settings
+                                        SET value = ' . $sign . ' 
+                                        WHERE setting = "assign_' . $key . '"';
+                change_db_data($connection, $update_sign_request);
+            }
+            header('Location: /settings.php');
+            exit();
+        } else {
+            header('Location: /index.php');
+            exit();
+        }
+        break;
+
+    case 'delete-type':
+        if (isUserMaster($user)) {
+            $type_for_delete = $_GET['type-id'];
+            $delete_type_request = 'UPDATE gem_type
+                                  SET gem_type.condition = "deleted"
+                                  WHERE id = ' . $type_for_delete;
+            change_db_data($connection, $delete_type_request);
+            header('Location: /settings.php');
+        } else {
+            header('Location: /index.php');
+            exit();
+        }
+        break;
+    case 'add-type':
+        if (isUserMaster($user)) {
+            $new_type = $_POST['type-name'];
+            $new_type_request = 'INSERT INTO gem_type (gem_type.condition, name)
+                                 VALUES ("active", "' . $new_type . '")';
+            change_db_data($connection, $new_type_request);
+            header('Location: /settings.php');
+        } else {
+            header('Location: /index.php');
+            exit();
+        }
+        break;
 }

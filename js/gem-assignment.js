@@ -1,5 +1,23 @@
 'use strict';
 
+let signSettings = {};
+
+window.addEventListener('load', function () {
+    let signSettingRequest = new XMLHttpRequest();
+    signSettingRequest.open('GET', 'http://gemenity:81/sign-setting.php');
+
+    signSettingRequest.addEventListener('readystatechange', function () {
+        if (signSettingRequest.readyState === 4) {
+            if (signSettingRequest.status === 200) {
+                signSettings = JSON.parse(signSettingRequest.responseText);
+                console.log(signSettings);
+            } else console.warn('Ошибка запроса!');
+        }
+    });
+
+    signSettingRequest.send();
+});
+
 function calculateRating (data, stash) {
     let servedElves = [];
     let tempGemGiving = {};
@@ -33,18 +51,18 @@ function calculateRating (data, stash) {
 
             //вычислить рейтинг для каждого эльфа по равномерному распределению
             if (elf.gem_amount === minGemAmount) {
-                elvesToRating[currentElf].push(MAX_RATING);
-            } else elvesToRating[currentElf].push(MIN_RATING);
+                elvesToRating[currentElf].push(MAX_RATING * signSettings.assign_equally);
+            } else elvesToRating[currentElf].push(MIN_RATING * signSettings.assign_equally);
 
             //рейтинг по соответствию предпочтениям
             if (stash in elf.prefs) {
-                elvesToRating[currentElf].push(parseFloat(elf.prefs[gemInStash.type]));
+                elvesToRating[currentElf].push(parseFloat(elf.prefs[gemInStash.type]) * signSettings.assign_prefs);
             } else elvesToRating[currentElf].push(0);
 
             //рейтинг по раздать по одному
             if (!servedElves.includes(currentElf)) {
-                elvesToRating[currentElf].push(MAX_RATING);
-            }  else elvesToRating[currentElf].push(MIN_RATING);
+                elvesToRating[currentElf].push(MAX_RATING * signSettings.assign_byone);
+            }  else elvesToRating[currentElf].push(MIN_RATING * signSettings.assign_byone);
         });
 
         //найти эльфа с максимальным рейтингом
@@ -55,7 +73,7 @@ function calculateRating (data, stash) {
             let currentRating = elvesToRating[elfRating];
 
             let sumRating = currentRating.reduce((accum, reduc) => accum + reduc);
-            if (sumRating > maxRating) {
+            if (sumRating >= maxRating) {
                 elfForGem = elfRating;
                 maxRating = sumRating;
             }

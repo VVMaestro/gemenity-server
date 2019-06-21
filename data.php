@@ -22,7 +22,8 @@ $preference_request = 'SELECT login, gem_type.name, rating FROM preferences
                             JOIN users ON users.id = preferences.USER
                             JOIN gem_type ON preferences.gem_type = gem_type.id';
 
-$gem_types_request = 'SELECT * FROM gem_type';
+$gem_types_request = 'SELECT * FROM gem_type
+                      WHERE gem_type.condition != "deleted"';
 
 $gems_request = 'SELECT gem_type.NAME,
        elfs.NAME AS assign_elf,
@@ -52,3 +53,5 @@ $active_elves_request = 'SELECT * FROM users
 
 $code_prefs_request = 'SELECT login, gem_type, rating FROM preferences
                         JOIN users ON users.id = preferences.USER';
+
+$signific_request = 'SELECT * FROM settings';

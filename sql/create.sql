@@ -45,6 +45,13 @@ CREATE TABLE preferences (
     rating   FLOAT
 );
 
+-- Создание таблицы весов алгоритмов
+CREATE TABLE settings (
+    assign_equally  FLOAT,
+    assign_prefs    FLOAT,
+    assign_byone    FLOAT
+);
+
 -- Удаление пользователя
 UPDATE users
 SET STATUS = 'deleted'

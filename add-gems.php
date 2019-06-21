@@ -9,7 +9,7 @@ $connect = connect_to_db($database);
 $user = $_SESSION['user'];
 $title = 'Добавление камней';
 
-if ($user && ($user['role'] == 'dwarf' || 'master-dwarf')) {
+if ($user && (isUserDwarf($user) || isUserMaster($user))) {
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         foreach ($_POST as $gem_type => $gem_amount) {
             for ($i = 0; $i < $gem_amount; $i++) {
