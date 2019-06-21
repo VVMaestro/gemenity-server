@@ -1,29 +1,25 @@
 'use strict';
 
-let elvesToData = [];
+function calculateRating (data, stash) {
+    let servedElves = [];
+    let tempGemGiving = {};
 
-function calculateRating () {
-    let unassignGems = document.querySelectorAll('.js-unassign-gem');
-    let gemStash = [];
-
-    unassignGems.forEach(function (gem) {
-        gemStash.push(parseInt(gem.dataset.gemtype));
+    data.forEach((elf) => {
+        tempGemGiving[elf.login] = 0;
     });
 
-    console.log(gemStash);
-
-    gemStash.forEach(function (gemInStash) {
+    stash.forEach(function (gemInStash) {
         let elvesToRating = {};
+        if(servedElves.length >= data.length) servedElves = [];
 
-        //вычислить рейтинг для каждого эльфа по равномерному распределению
-
+        //найти минимальное количество камней среди всех эльфов
         let minGemAmount = Number.MAX_VALUE;
-        elvesToData.forEach(function (elf) {
+        data.forEach(function (elf) {
             let currentElf = elf.login;
 
             elvesToRating[currentElf] = [];
 
-            if (elf.gem_amount < minGemAmount) {
+            if (elf.gem_amount + tempGemGiving[currentElf] < minGemAmount) {
                 minGemAmount = elf.gem_amount;
             }
         });
@@ -31,42 +27,54 @@ function calculateRating () {
         const MAX_RATING = 1;
         const MIN_RATING = 0;
 
-        elvesToData.forEach(function (elf) {
+        data.forEach(function (elf) {
             let currentElf = elf.login;
             elvesToRating[currentElf] = [];
 
+            //вычислить рейтинг для каждого эльфа по равномерному распределению
             if (elf.gem_amount === minGemAmount) {
                 elvesToRating[currentElf].push(MAX_RATING);
             } else elvesToRating[currentElf].push(MIN_RATING);
-        });
 
-        //рейтинг по соответствию предпочтениям
-
-        elvesToData.forEach(function (elf) {
-            let currentElf = elf.login;
-            console.log(elf);
-            if (gemStash in elf.prefs) {
-                elvesToRating[currentElf].push(parseFloat(elf.prefs[gemInStash]));
+            //рейтинг по соответствию предпочтениям
+            if (stash in elf.prefs) {
+                elvesToRating[currentElf].push(parseFloat(elf.prefs[gemInStash.type]));
             } else elvesToRating[currentElf].push(0);
-        });
 
-        //рейтинг по раздать по одному
-
-        let servedElves = [];
-
-        elvesToData.forEach(function (elf) {
-            let currentElf = elf.login;
-
+            //рейтинг по раздать по одному
             if (!servedElves.includes(currentElf)) {
                 elvesToRating[currentElf].push(MAX_RATING);
             }  else elvesToRating[currentElf].push(MIN_RATING);
         });
 
-        console.log(elvesToRating);
+        //найти эльфа с максимальным рейтингом
+        let elfForGem;
+        let maxRating = 0;
+
+        for (let elfRating in elvesToRating) {
+            let currentRating = elvesToRating[elfRating];
+
+            let sumRating = currentRating.reduce((accum, reduc) => accum + reduc);
+            if (sumRating > maxRating) {
+                elfForGem = elfRating;
+                maxRating = sumRating;
+            }
+        }
+
+        let gemForElf = document.querySelector('#g' + gemInStash.id);
+        gemForElf.value = elfForGem;
+
+        servedElves.push(elfForGem);
+        tempGemGiving[elfForGem]++;
     });
 }
 
-window.addEventListener('load', function () {
+let elvesToData = [];
+const assignButton = document.querySelector('#js-assign-button');
+const unassignGems = document.querySelectorAll('.js-unassign-gem');
+const manuallyGemInput = document.querySelector('#m-gems');
+
+assignButton.addEventListener('click', function () {
     let elfDataRequest = new XMLHttpRequest();
 
     elfDataRequest.open('GET', 'http://gemenity:81/elves-data.php');
@@ -75,12 +83,41 @@ window.addEventListener('load', function () {
         if (elfDataRequest.readyState === 4) {
             if (elfDataRequest.status === 200) {
                 elvesToData = JSON.parse(elfDataRequest.responseText);
-                calculateRating();
+
+                let gemStash = [];
+
+                unassignGems.forEach(function (gem) {
+                    gemStash.push(
+                        {
+                            id: parseInt(gem.dataset.gemid),
+                            type: parseInt(gem.dataset.gemtype)
+                        }
+                    );
+                });
+
+                calculateRating(elvesToData, gemStash);
+                manuallyGemInput.value = '';
             } else console.warn('Ошибка запроса!');
         }
     });
 
     elfDataRequest.send();
+});
+
+unassignGems.forEach((input)=> {
+    input.addEventListener('input',()=>{
+        const gemId = input.dataset.gemid;
+        let tempValue = manuallyGemInput.value;
+        let valueArray = tempValue.split(';');
+
+        console.log(valueArray);
+
+        if (!valueArray.includes(gemId)) {
+            valueArray.push(gemId);
+        }
+
+        manuallyGemInput.value = valueArray.join(';');
+    });
 });
 
 

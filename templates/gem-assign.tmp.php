@@ -3,14 +3,16 @@
         <section class="page__section">
             <h1 class="page__title">Рапределить драгоценности</h1>
             <form action="/gem-assign.php" method="POST">
+                <input type="hidden" id="m-gems" name="manually-gems" value="">
                 <ul class="gem-info__list">
                     <?php foreach ($unassign_gems as $gem) : ?>
                         <li class="gem-info__item">
-                            <ul class="gem-info__info js-unassign-gem" data-gemtype="<?=$gem['type_id'];?>">
+                            <ul class="gem-info__info">
                                 <li><?= $gem['type']; ?></li>
                                 <li>Гном-добытчик: <?= $gem['mine_dwarf']; ?></li>
                                 <li>Дата добычи: <?= $gem['mine_date']; ?></li>
-                                <li>Эльф-владелец: <input type="text" name="<?= $gem['gem_id']; ?>" value="" class="input">
+                                <li>Эльф-владелец:
+                                    <input type="text" id="g<?= $gem['gem_id']; ?>" data-gemtype="<?=$gem['type_id'];?>" data-gemid="<?=$gem['gem_id'];?>" name="<?= $gem['gem_id']; ?>" value="" class="input js-unassign-gem">
                                 </li>
                             </ul>
                         </li>
