@@ -35,7 +35,8 @@ if (isset($user) && isUserMaster($user)) {
 
 $layout = renderTemplate('layout', [
     'title' => $title,
-    'page_content' => $page_content
+    'page_content' => $page_content,
+    'user' => $user
 ]);
 
 print ($layout);

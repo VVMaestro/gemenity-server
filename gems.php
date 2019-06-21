@@ -48,7 +48,7 @@ if (isset($user)) {
             else return false;
         },
         'status' => function ($gem) {
-            if ($gem['status'] == $_POST['status']) return true;
+            if ($gem['gem_status'] == $_POST['status']) return true;
             else return false;
         }
     ];
@@ -57,14 +57,15 @@ if (isset($user)) {
     $gem_types = get_db_data($connect, $gem_types_request);
 
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-        $filtered_gems = array_filter($gems, $post_to_filter[$_POST['filter']]);
+        $filtered_gems = array_filter($gems, $post_to_filter[trim($_POST['filter'])]);
     } else {
         $filtered_gems = $gems;
     }
 
     $page_content = renderTemplate('gems.tmp', [
         'gems' => $filtered_gems,
-        'gem_types' => $gem_types
+        'gem_types' => $gem_types,
+        'user' => $user
     ]);
 } else {
     header('Location: /index.php');
@@ -72,6 +73,7 @@ if (isset($user)) {
 
 $layout_content = renderTemplate('layout', [
     'page_content' => $page_content,
-    'title' => $title
+    'title' => $title,
+    'user' => $user
 ]);
 print($layout_content);

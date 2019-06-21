@@ -6,6 +6,8 @@ require_once 'functions.php';
 
 session_start();
 
+$_SESSION['user'] = null;
+
 //если запрос из формы
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $post_data = $_POST;
@@ -50,7 +52,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: /elf.php');
             exit();
         } else if (isUserMaster($auth_user)) {
-            header('Location: /users.php');
+            header('Location: /gem-assign.php');
             exit();
         }
     }

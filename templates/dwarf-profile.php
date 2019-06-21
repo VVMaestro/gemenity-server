@@ -61,6 +61,7 @@
                         <legend class="profile__title">Метка мастера</legend>
                         <form action="/control.php" method="post">
                             <input type="hidden" name="action" value="change-master">
+                            <input type="hidden" name="changed_user" value="<?=$login;?>">
                             <label class="profile__checkbox">
                                 <input type="checkbox"
                                        name="master-dwarf" <?php if ($role == 'master-dwarf') print('checked') ?>>
@@ -69,9 +70,13 @@
                             <input type="submit" class="button profile__button" value="Обновить">
                         </form>
                     </fieldset>
-                    <div>
-                        <?php if (isset($messages['change'])) print ($messages['change']) ?>
-                    </div>
+                    <ul>
+                        <?php if (isset($messages)) : ?>
+                            <?php foreach ($messages as $message) : ?>
+                            <li><?=$message;?></li>
+                            <?php endforeach; ?>
+                        <?php endif;?>
+                    </ul>
                 </div>
             </div>
             <div class="profile__colums">

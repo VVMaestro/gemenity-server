@@ -130,52 +130,57 @@ switch ($action) {
         break;
 
     case 'update-prefs':
-        $new_prefs = [];
-        foreach ($_POST as $key => $item) {
-            if ($key != 'changed_user' || $key != 'action') {
-                $new_prefs[$key] = floatval($item);
+
+        if ($changed_user['login'] == $user['login']) {
+            $new_prefs = [];
+            foreach ($_POST as $key => $item) {
+                if ($key != 'changed_user' || $key != 'action') {
+                    $new_prefs[$key] = (float)$item;
+                }
             }
-        }
+            $rating_sum = array_reduce($new_prefs, function ($sum, $item, $initial = 0) {
+                $sum += $item;
+                return $sum;
+            });
+            if ($rating_sum > 1) {
+                $_SESSION['messages']['denied'] = 'Сумма предпочтений не может быть больше единицы';
+                header('Location: ' . get_user_page($changed_user));
+                exit();
+            }
+            $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
+                                LEFT JOIN 
+                                (SELECT * FROM preferences WHERE USER = "' . $changed_user['id'] . '") AS elf_prefs
+                                ON gem_type.id = gem_type
+                                WHERE gem_type.condition != "deleted"';
+            $elf_prefs = get_db_data($connection, $elf_prefs_request);
+            foreach ($elf_prefs as $pref) {
+                if ($pref['rating'] == null) {
+                    $pref_request = 'INSERT INTO preferences (gem_type, user, rating)
+                                            VALUES ("' . $pref['id'] . '","' . $changed_user['id'] . '","' . $new_prefs[$pref['id']] . '")';
+                } else {
+                    $pref_request = 'UPDATE preferences
+                                     SET rating = "' . $new_prefs[$pref['id']] . '"
+                                     WHERE gem_type = "' . $pref['id'] . '" AND user = "' . $changed_user['id'] . '"';
+                }
 
-        $rating_sum = array_reduce($new_prefs, function ($sum, $item, $initial = 0) {
-            $sum += $item;
-            return $sum;
-        });
-
-        if ($rating_sum > 1) {
-            $_SESSION['messages']['denied'] = 'Сумма предпочтений не может быть больше единицы';
+                change_db_data($connection, $pref_request);
+            }
+            $_SESSION['messages']['success'] = 'Предпочтения обновлены';
             header('Location: ' . get_user_page($changed_user));
             exit();
+            break;
+        } else {
+            $_SESSION['messages']['denied'] = 'У вас нет прав для этого';
+            header('Location: ' . get_user_page($changed_user));
+            exit();
+            break;
         }
-
-        $elf_prefs_request = 'SELECT gem_type.id, name, rating FROM gem_type
-                            LEFT JOIN 
-                            (SELECT * FROM preferences WHERE USER = "' . $changed_user['id'] . '") AS elf_prefs
-                            ON gem_type.id = gem_type';
-        $elf_prefs = get_db_data($connection, $elf_prefs_request);
-
-        foreach ($elf_prefs as $pref) {
-            if ($pref['rating'] == null) {
-                $pref_request = 'INSERT INTO preferences (gem_type, user, rating)
-                                        VALUES ("'. $pref['id'] . '","'. $changed_user['id'] . '","'. $new_prefs[$pref['id']] . '")';
-            } else {
-                $pref_request = 'UPDATE preferences
-                                 SET rating = "' . $new_prefs[$pref['id']] . '"
-                                 WHERE gem_type = "' . $pref['id'] . '" AND user = "' . $changed_user['id'] . '"';
-            }
-
-            change_db_data($connection, $pref_request);
-        }
-        $_SESSION['messages']['success'] = 'Предпочтения обновлены';
-        header('Location: ' . get_user_page($changed_user));
-        exit();
-        break;
 
     case 'confirm_gem':
         if ($changed_user['login'] == $user['login']) {
             $gem_id = $_GET['gem_id'];
             $confirm_gem_request = 'UPDATE gems
-                                    SET STATUS = "confirmed"
+                                    SET STATUS = "confirmed", confirmation_date = CURDATE()
                                     WHERE id = ' . $gem_id;
             change_db_data($connection, $confirm_gem_request);
 
@@ -246,4 +251,24 @@ switch ($action) {
             exit();
         }
         break;
+    case 'change-master':
+        if (isUserMaster($user)) {
+            if ($_POST['master-dwarf'] == true) {
+                $master_request = 'UPDATE users
+                                   SET role = "master-dwarf"
+                                   WHERE login = "' . $changed_user['login'] . '"';
+            } else {
+                $master_request = 'UPDATE users
+                                   SET role = "dwarf"
+                                   WHERE login = "' . $changed_user['login'] . '"';
+            }
+            change_db_data($connection, $master_request);
+            $_SESSION['messages']['success'] = 'Роль гнома изменена';
+            header('Location: ' . get_user_page($changed_user));
+            exit();
+        } else {
+            $_SESSION['messages']['denied'] = 'Только мастер-гном может назначать новых мастеров';
+            header('Location: ' . get_user_page($changed_user));
+            exit();
+        }
 }

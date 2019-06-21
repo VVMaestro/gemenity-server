@@ -1,7 +1,12 @@
 <main>
     <div class="container">
         <section class="page__section">
-            <h2 class="page__title">Список драгоценностей</h2>
+            <div class="page__columns">
+                <h2 class="page__title">Список драгоценностей</h2>
+                <?php if (isUserMaster($user)): ?>
+                    <a href="/gem-assign.php" class="button">Распределить драгоценности</a>
+                <?php endif ?>
+            </div>
             <div class="gem-info__filter filter">
                 <h3 class="filter__title">Отфильтровать по: </h3>
                 <form action="/gems.php" method="POST">
@@ -41,17 +46,17 @@
                         <li>Добыто: <?=$gem['mine_date']; ?></li>
                         <li>Назначено: <?=$gem['assign_date']; ?></li>
                         <li>Подтверждено: <?=$gem['confirmation_date']; ?></li>
-                        <li>Гном-добытчик: <?=$gem['mined_dwarf']; ?></li>
-                        <li>Мастер-распределитель: <?=$gem['confirm_by']; ?></li>
+                        <li>Гном-добытчик: <?=$gem['dwarf_name']; ?></li>
+                        <li>Мастер-распределитель: <?=$gem['master_name']; ?></li>
                         <li>Распределено:
-                            <?php if($gem['assign_by'] == 'manually') print('Вручную');
-                            elseif ($gem['assign_by'] == 'algorithm') print('Алгоритмом'); ?>
+                            <?php if($gem['assigned_by'] == 'manually') print('Вручную');
+                            elseif ($gem['assigned_by'] == 'algorithm') print('Алгоритмом'); ?>
                         </li>
-                        <li>Эльф-владелец: <?=$gem['assign_elf']; ?></li>
+                        <li>Эльф-владелец: <?=$gem['elf_name']; ?></li>
                         <li>Статус:
-                            <?php if($gem['status'] == 'assigned') print('Назначено');
-                            elseif ($gem['status'] == 'not_assigned') print('Неназначено');
-                            elseif ($gem['status'] == 'confirmed') print('Подтверждено'); ?>
+                            <?php if($gem['gem_status'] == 'assigned') print('Назначено');
+                            elseif ($gem['gem_status'] == 'not_assigned') print('Неназначено');
+                            elseif ($gem['gem_status'] == 'confirmed') print('Подтверждено'); ?>
                         </li>
                     </ul>
                 </li>
@@ -60,3 +65,5 @@
         </section>
     </div>
 </main>
+
+<script type="text/javascript" src="js/gem-filter.js"></script>

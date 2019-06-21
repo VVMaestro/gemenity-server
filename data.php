@@ -26,19 +26,22 @@ $gem_types_request = 'SELECT * FROM gem_type
                       WHERE gem_type.condition != "deleted"';
 
 $gems_request = 'SELECT gem_type.NAME,
-       elfs.NAME AS assign_elf,
-       dwarfs.NAME AS mined_dwarf,
-       masters.NAME AS confirm_by,
+       elfs.NAME AS elf_name,
+       dwarfs.NAME AS dwarf_name,
+       masters.NAME AS master_name,
+       elfs.login AS assign_elf,
+       dwarfs.login AS mined_dwarf,
+       masters.login AS confirm_by,
        mine_date,
        assign_date,
        confirmation_date,
        assigned_by,
-       gems.status
+       gems.status AS gem_status
 FROM gems
     JOIN users AS dwarfs ON dwarfs.id = mine_dwarf
     left JOIN users AS elfs ON elfs.id = assign_elf
     LEFT JOIN users AS masters ON masters.id = confirmation_master
-    JOIN gem_type ON gem_type.id = type;';
+    JOIN gem_type ON gem_type.id = type';
 
 $unassign_gems_request = 'SELECT gems.id AS gem_id, gem_type.id AS type_id, gem_type.NAME AS type, users.name AS mine_dwarf, mine_date FROM gems
                           JOIN users ON mine_dwarf = users.id

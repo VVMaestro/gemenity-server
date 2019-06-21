@@ -16,10 +16,6 @@
                         <?= $errors['password']; ?>
                     <?php endif ?>
                 </p>
-                <label class="auth__label" for="auth-save-sess">
-                    <input class="auth__checkbox" id="auth-save-sess" type="checkbox" name="save-sess">
-                    Запомнить меня
-                </label>
                 <input class="auth__button button button--block" type="submit" value="Войти">
                 <input class="auth__button button button--block" type="reset">
             </form>
